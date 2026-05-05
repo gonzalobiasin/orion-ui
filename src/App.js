@@ -21,16 +21,21 @@ function App() {
   }, []);
 
   return (
-    <div className="app">
+    <div className="layout">
+      
+      <div className="topbar">
+        <h2>Orion Journal 🚀</h2>
+        <button className="btn-new" onClick={() => setOpen(true)}>
+          + Nueva operación
+        </button>
+      </div>
+
       <Dashboard trades={trades} />
 
-      <button className="btn-new" onClick={() => setOpen(true)}>
-        + Nueva operación
-      </button>
+      <TradeList trades={trades} reload={cargar} />
 
       <TradeForm open={open} onClose={() => setOpen(false)} onSave={cargar} />
 
-      <TradeList trades={trades} reload={cargar} />
     </div>
   );
 }
