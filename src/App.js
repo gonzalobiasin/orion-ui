@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const API = "https://orion-backend-8nbf.onrender.com";
+console.log("API URL:", API);
 
 function App() {
   const [email, setEmail] = useState("");
@@ -23,15 +24,19 @@ function App() {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      console.log("LOGIN STATUS:", res.status);
 
-      if (res.ok) {
+      const data = await res.json();
+      console.log("LOGIN DATA:", data);
+
+      if (res.ok && data.user_id) {
         setUserId(data.user_id);
         loadTrades(data.user_id);
       } else {
-        alert(data.detail);
+        alert(data.detail || "Error en login");
       }
     } catch (err) {
+      console.error(err);
       alert("Error de conexión con backend");
     }
   };
@@ -47,15 +52,19 @@ function App() {
         body: JSON.stringify({ email, password }),
       });
 
+      console.log("REGISTER STATUS:", res.status);
+
       const data = await res.json();
+      console.log("REGISTER DATA:", data);
 
       if (res.ok) {
-        alert("Usuario creado, ahora logueate");
+        alert("Usuario creado correctamente");
       } else {
-        alert(data.detail);
+        alert(data.detail || "Error en registro");
       }
     } catch (err) {
-      alert("Error de conexión");
+      console.error(err);
+      alert("Error de conexión con backend");
     }
   };
 
@@ -64,9 +73,10 @@ function App() {
     try {
       const res = await fetch(API + "/trades/" + uid);
       const data = await res.json();
+      console.log("TRADES:", data);
       setTrades(data);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -86,17 +96,20 @@ function App() {
         }),
       });
 
+      console.log("CREATE TRADE STATUS:", res.status);
+
       if (res.ok) {
         loadTrades(userId);
         setActivo("");
+      } else {
+        alert("Error al guardar trade");
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
-  // ---------------- UI ----------------
-
+  // ---------------- UI LOGIN ----------------
   if (!userId) {
     return (
       <div style={{ background: "black", color: "gold", height: "100vh", padding: 40 }}>
@@ -123,6 +136,7 @@ function App() {
     );
   }
 
+  // ---------------- UI APP ----------------
   return (
     <div style={{ background: "black", color: "white", minHeight: "100vh", padding: 40 }}>
       <h1 style={{ color: "gold" }}>Orion Journal 🚀</h1>
