@@ -1,64 +1,122 @@
 import { useState, useEffect } from "react";
-import "./App.css";
 
-const API = "https://orion-journal.onrender.com";
+const API = "https://orion-backend-8nbf.onrender.com";
 
 function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userId, setUserId] = useState(null);
-
-  const [asset, setAsset] = useState("");
-  const [direction, setDirection] = useState("LONG");
-  const [result, setResult] = useState("WIN");
-
   const [trades, setTrades] = useState([]);
 
-  // ======================
-  // AUTH
-  // ======================
-  const register = async () => {
-    await fetch(`${API}/register?email=${email}&password=${password}`, {
-      method: "POST"
-    });
-    alert("Usuario creado");
-  };
+  const [activo, setActivo] = useState("");
+  const [tipo, setTipo] = useState("LONG");
+  const [resultado, setResultado] = useState("WIN");
 
+  // ---------------- LOGIN ----------------
   const login = async () => {
-    const res = await fetch(`${API}/login?email=${email}&password=${password}`, {
-      method: "POST"
-    });
+    try {
+      const res = await fetch(API + "/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await res.json();
-    setUserId(data.user_id);
-    loadTrades(data.user_id);
+      const data = await res.json();
+
+      if (res.ok) {
+        setUserId(data.user_id);
+        loadTrades(data.user_id);
+      } else {
+        alert(data.detail);
+      }
+    } catch (err) {
+      alert("Error de conexión con backend");
+    }
   };
 
-  // ======================
-  // TRADES
-  // ======================
-  const loadTrades = async (id) => {
-    const res = await fetch(`${API}/trades/${id}`);
-    const data = await res.json();
-    setTrades(data);
+  // ---------------- REGISTER ----------------
+  const register = async () => {
+    try {
+      const res = await fetch(API + "/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Usuario creado, ahora logueate");
+      } else {
+        alert(data.detail);
+      }
+    } catch (err) {
+      alert("Error de conexión");
+    }
   };
 
-  const saveTrade = async () => {
-    await fetch(`${API}/trades?asset=${asset}&direction=${direction}&result=${result}&user_id=${userId}`, {
-      method: "POST"
-    });
-    loadTrades(userId);
+  // ---------------- LOAD TRADES ----------------
+  const loadTrades = async (uid) => {
+    try {
+      const res = await fetch(API + "/trades/" + uid);
+      const data = await res.json();
+      setTrades(data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  // ======================
-  // UI
-  // ======================
+  // ---------------- CREATE TRADE ----------------
+  const createTrade = async () => {
+    try {
+      const res = await fetch(API + "/trades", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          activo,
+          tipo,
+          resultado,
+        }),
+      });
+
+      if (res.ok) {
+        loadTrades(userId);
+        setActivo("");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // ---------------- UI ----------------
+
   if (!userId) {
     return (
-      <div className="auth">
+      <div style={{ background: "black", color: "gold", height: "100vh", padding: 40 }}>
         <h1>Orion Journal 🚀</h1>
-        <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-        <input placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} />
+
+        <input
+          placeholder="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <br /><br />
+
+        <input
+          placeholder="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <br /><br />
+
         <button onClick={login}>Login</button>
         <button onClick={register}>Register</button>
       </div>
@@ -66,32 +124,34 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <h1>Orion Journal 🚀</h1>
+    <div style={{ background: "black", color: "white", minHeight: "100vh", padding: 40 }}>
+      <h1 style={{ color: "gold" }}>Orion Journal 🚀</h1>
 
-      <div className="form">
-        <input placeholder="Activo" onChange={(e) => setAsset(e.target.value)} />
+      <h2>Nuevo Trade</h2>
 
-        <select onChange={(e) => setDirection(e.target.value)}>
-          <option>LONG</option>
-          <option>SHORT</option>
-        </select>
+      <input
+        placeholder="Activo"
+        value={activo}
+        onChange={(e) => setActivo(e.target.value)}
+      />
 
-        <select onChange={(e) => setResult(e.target.value)}>
-          <option>WIN</option>
-          <option>LOSS</option>
-        </select>
+      <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
+        <option>LONG</option>
+        <option>SHORT</option>
+      </select>
 
-        <button onClick={saveTrade}>Guardar</button>
-      </div>
+      <select value={resultado} onChange={(e) => setResultado(e.target.value)}>
+        <option>WIN</option>
+        <option>LOSS</option>
+      </select>
+
+      <button onClick={createTrade}>Guardar</button>
 
       <h2>Historial</h2>
 
       {trades.map((t) => (
-        <div className="card" key={t.id}>
-          <p>{t.asset}</p>
-          <p>{t.direction}</p>
-          <p>{t.result}</p>
+        <div key={t.id} style={{ border: "1px solid gold", margin: 10, padding: 10 }}>
+          {t.activo} - {t.tipo} - {t.resultado}
         </div>
       ))}
     </div>
