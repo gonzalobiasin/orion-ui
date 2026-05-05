@@ -1,5 +1,7 @@
 import { useState } from "react";
 import "./App.css";
+import Sidebar from "./layout/Sidebar";
+import Header from "./layout/Header";
 import Dashboard from "./components/Dashboard";
 import TradeForm from "./components/TradeForm";
 import TradeList from "./components/TradeList";
@@ -11,6 +13,7 @@ function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [trades, setTrades] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
 
   const login = async () => {
     const res = await fetch(API + "/login", {
@@ -26,15 +29,6 @@ function App() {
     }
   };
 
-  const register = async () => {
-    await fetch(API + "/register", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({email, password})
-    });
-    alert("Usuario creado");
-  };
-
   const loadTrades = async (uid) => {
     const res = await fetch(API + "/trades/" + uid);
     const data = await res.json();
@@ -48,16 +42,28 @@ function App() {
         <input placeholder="email" onChange={e=>setEmail(e.target.value)}/>
         <input type="password" placeholder="password" onChange={e=>setPassword(e.target.value)}/>
         <button onClick={login}>Login</button>
-        <button onClick={register}>Register</button>
       </div>
     );
   }
 
   return (
-    <div className="app">
-      <Dashboard trades={trades}/>
-      <TradeForm userId={userId} onTradeCreated={()=>loadTrades(userId)}/>
-      <TradeList trades={trades}/>
+    <div className="layout">
+      <Sidebar />
+
+      <div className="main">
+        <Header onOpen={()=>setOpenModal(true)} />
+
+        <Dashboard trades={trades} />
+
+        <TradeList trades={trades} />
+
+        <TradeForm 
+          open={openModal}
+          onClose={()=>setOpenModal(false)}
+          userId={userId}
+          onTradeCreated={()=>loadTrades(userId)}
+        />
+      </div>
     </div>
   );
 }

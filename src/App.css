@@ -1,9 +1,53 @@
-.btn-open {
-  background:#ffcc00;
-  padding:10px 20px;
-  border:none;
+body {
+  margin:0;
+  background:#0b0f14;
+  color:white;
+  font-family:Arial;
+}
+
+.layout {
+  display:flex;
+}
+
+.sidebar {
+  width:220px;
+  background:#111;
+  height:100vh;
+  padding:20px;
+}
+
+.menu div {
+  margin:15px 0;
   cursor:pointer;
+}
+
+.main {
+  flex:1;
+  padding:20px;
+}
+
+.header {
+  display:flex;
+  justify-content:space-between;
   margin-bottom:20px;
+}
+
+.btn-primary {
+  background:#ffcc00;
+  border:none;
+  padding:10px 15px;
+}
+
+.cards {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+
+.cards div {
+  background:#111;
+  padding:20px;
+  border-radius:10px;
 }
 
 .modal {
@@ -34,7 +78,6 @@
   flex:1;
   padding:10px;
   border:none;
-  cursor:pointer;
 }
 
 .long.active {
@@ -45,22 +88,18 @@
   background:#ff4d4d;
 }
 
-.crypto-list div {
-  padding:5px;
-  cursor:pointer;
-}
-
-.grid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin:10px 0;
-}
-
 .btn-save {
   width:100%;
   padding:10px;
   background:#00ff88;
   border:none;
-  cursor:pointer;
 }
+
+.trade {
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+}
+
+.trade.WIN { color:#00ff88; }
+.trade.LOSS { color:#ff4d4d; }
