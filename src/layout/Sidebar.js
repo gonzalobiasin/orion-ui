@@ -1,13 +1,10 @@
 export default function Sidebar() {
   return (
     <div className="sidebar">
-      <div className="logo">MLP</div>
-
-      <div className="menu">
-        <div>📊 Dashboard</div>
-        <div>📈 Estadísticas</div>
-        <div>📅 Calendario</div>
-      </div>
+      <h2>MLP</h2>
+      <p>Bitácora</p>
+      <p>Operaciones</p>
+      <p>Estadísticas</p>
     </div>
   );
 }

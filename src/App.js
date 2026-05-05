@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Login from "./Login";
 import Dashboard from "./components/Dashboard";
+import "./App.css";
 
 function App() {
   const [user, setUser] = useState(null);
 
-  if (!user) {
-    return <Login setUser={setUser} />;
-  }
+  useEffect(() => {
+    const saved = localStorage.getItem("user");
+    if (saved) setUser(JSON.parse(saved));
+  }, []);
 
-  return <Dashboard user={user} />;
+  return !user ? (
+    <Login onLogin={setUser} />
+  ) : (
+    <Dashboard user={user} />
+  );
 }
 
 export default App;

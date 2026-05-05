@@ -1,16 +1,39 @@
-export default function Dashboard({ trades }) {
-  const wins = trades.filter(t => t.resultado === "WIN").length;
-  const losses = trades.filter(t => t.resultado === "LOSS").length;
-  const open = trades.filter(t => t.resultado === "OPEN").length;
+import { useState } from "react";
+import Sidebar from "../layout/Sidebar";
+import TradeModal from "./TradeModal";
+import TradeList from "./TradeList";
 
-  const pnl = trades.reduce((acc, t) => acc + (t.pnl || 0), 0);
+export default function Dashboard() {
+  const [trades, setTrades] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+
+  const addTrade = (trade) => {
+    setTrades([...trades, trade]);
+  };
+
+  const deleteTrade = (index) => {
+    const updated = trades.filter((_, i) => i !== index);
+    setTrades(updated);
+  };
 
   return (
-    <div className="dashboard">
-      <div className="card">WIN: {wins}</div>
-      <div className="card red">LOSS: {losses}</div>
-      <div className="card blue">OPEN: {open}</div>
-      <div className="card green">PNL: ${pnl}</div>
+    <div className="app">
+      <Sidebar />
+
+      <div className="main">
+        <button className="btn-new" onClick={() => setShowModal(true)}>
+          + Nueva operación
+        </button>
+
+        {showModal && (
+          <TradeModal
+            onClose={() => setShowModal(false)}
+            onSave={addTrade}
+          />
+        )}
+
+        <TradeList trades={trades} onDelete={deleteTrade} />
+      </div>
     </div>
   );
 }
