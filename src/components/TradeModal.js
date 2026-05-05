@@ -1,31 +1,42 @@
 import { useState } from "react";
 
-export default function TradeModal({ onClose, onSave }) {
-  const [symbol, setSymbol] = useState("");
-  const [type, setType] = useState("LONG");
-
-  const save = () => {
-    onSave({ symbol, type });
-    onClose();
-  };
+export default function TradeModal({ onSave, onClose }) {
+  const [asset, setAsset] = useState("");
+  const [type, setType] = useState("long");
+  const [result, setResult] = useState("open");
 
   return (
     <div className="modal">
-      <div className="modal-content">
+      <div className="modal-box">
         <h2>Nueva operación</h2>
 
         <input
           placeholder="Activo"
-          onChange={(e) => setSymbol(e.target.value)}
+          value={asset}
+          onChange={e => setAsset(e.target.value)}
         />
 
-        <select onChange={(e) => setType(e.target.value)}>
-          <option>LONG</option>
-          <option>SHORT</option>
+        <select onChange={e => setType(e.target.value)}>
+          <option value="long">LONG</option>
+          <option value="short">SHORT</option>
         </select>
 
-        <button onClick={save}>Guardar</button>
-        <button onClick={onClose}>Cerrar</button>
+        <select onChange={e => setResult(e.target.value)}>
+          <option value="open">EN CURSO</option>
+          <option value="win">WIN</option>
+          <option value="loss">LOSS</option>
+        </select>
+
+        <button
+          onClick={() => {
+            onSave({ asset, type, result });
+            onClose();
+          }}
+        >
+          Guardar
+        </button>
+
+        <button onClick={onClose}>Cancelar</button>
       </div>
     </div>
   );
