@@ -1,11 +1,8 @@
-export default function Header({ onOpen }) {
-  return (
+export default function Header({onOpen}){
+  return(
     <div className="header">
-      <h1>Bitácora</h1>
-
-      <button className="btn-primary" onClick={onOpen}>
-        + NUEVA OPERACIÓN
-      </button>
+      <h2>Bitácora</h2>
+      <button className="btn-primary" onClick={onOpen}>+ Nueva operación</button>
     </div>
   );
 }

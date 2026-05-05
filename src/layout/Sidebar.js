@@ -1,8 +1,7 @@
-export default function Sidebar() {
-  return (
+export default function Sidebar(){
+  return(
     <div className="sidebar">
-      <h2>MLP</h2>
-
+      <div className="logo">MLP</div>
       <div className="menu">
         <div>📊 Bitácora</div>
         <div>📈 Estadísticas</div>
