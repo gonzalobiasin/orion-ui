@@ -1,7 +1,7 @@
 import { useState } from "react";
+import "./App.css";
 
 const API = "https://orion-backend-8nbf.onrender.com";
-console.log("API URL:", API);
 
 function App() {
   const [email, setEmail] = useState("");
@@ -13,161 +13,125 @@ function App() {
   const [tipo, setTipo] = useState("LONG");
   const [resultado, setResultado] = useState("WIN");
 
-  // ---------------- LOGIN ----------------
   const login = async () => {
     try {
       const res = await fetch(API + "/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
-      console.log("LOGIN STATUS:", res.status);
-
       const data = await res.json();
-      console.log("LOGIN DATA:", data);
 
       if (res.ok && data.user_id) {
         setUserId(data.user_id);
         loadTrades(data.user_id);
       } else {
-        alert(data.detail || "Error en login");
+        alert("Error en login");
       }
-    } catch (err) {
-      console.error(err);
-      alert("Error de conexión con backend");
+    } catch {
+      alert("Error conexión backend");
     }
   };
 
-  // ---------------- REGISTER ----------------
   const register = async () => {
-    try {
-      const res = await fetch(API + "/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      console.log("REGISTER STATUS:", res.status);
-
-      const data = await res.json();
-      console.log("REGISTER DATA:", data);
-
-      if (res.ok) {
-        alert("Usuario creado correctamente");
-      } else {
-        alert(data.detail || "Error en registro");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Error de conexión con backend");
-    }
+    await fetch(API + "/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    alert("Usuario creado");
   };
 
-  // ---------------- LOAD TRADES ----------------
   const loadTrades = async (uid) => {
-    try {
-      const res = await fetch(API + "/trades/" + uid);
-      const data = await res.json();
-      console.log("TRADES:", data);
-      setTrades(data);
-    } catch (err) {
-      console.error(err);
-    }
+    const res = await fetch(API + "/trades/" + uid);
+    const data = await res.json();
+    setTrades(data);
   };
 
-  // ---------------- CREATE TRADE ----------------
   const createTrade = async () => {
-    try {
-      const res = await fetch(API + "/trades", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          activo,
-          tipo,
-          resultado,
-        }),
-      });
+    await fetch(API + "/trades", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_id: userId,
+        activo,
+        tipo,
+        resultado,
+      }),
+    });
 
-      console.log("CREATE TRADE STATUS:", res.status);
-
-      if (res.ok) {
-        loadTrades(userId);
-        setActivo("");
-      } else {
-        alert("Error al guardar trade");
-      }
-    } catch (err) {
-      console.error(err);
-    }
+    loadTrades(userId);
+    setActivo("");
   };
 
-  // ---------------- UI LOGIN ----------------
   if (!userId) {
     return (
-      <div style={{ background: "black", color: "gold", height: "100vh", padding: 40 }}>
-        <h1>Orion Journal 🚀</h1>
+      <div className="container">
+        <h1 className="title">Orion Journal 🚀</h1>
 
         <input
-          placeholder="email"
+          className="input"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <br /><br />
 
         <input
-          placeholder="password"
+          className="input"
           type="password"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <br /><br />
 
-        <button onClick={login}>Login</button>
-        <button onClick={register}>Register</button>
+        <div className="btn-group">
+          <button className="btn" onClick={login}>Login</button>
+          <button className="btn-outline" onClick={register}>Register</button>
+        </div>
       </div>
     );
   }
 
-  // ---------------- UI APP ----------------
   return (
-    <div style={{ background: "black", color: "white", minHeight: "100vh", padding: 40 }}>
-      <h1 style={{ color: "gold" }}>Orion Journal 🚀</h1>
+    <div className="container">
+      <h1 className="title">Orion Journal 🚀</h1>
 
-      <h2>Nuevo Trade</h2>
+      <div className="card">
+        <h2>Nuevo Trade</h2>
 
-      <input
-        placeholder="Activo"
-        value={activo}
-        onChange={(e) => setActivo(e.target.value)}
-      />
+        <input
+          className="input"
+          placeholder="Activo"
+          value={activo}
+          onChange={(e) => setActivo(e.target.value)}
+        />
 
-      <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
-        <option>LONG</option>
-        <option>SHORT</option>
-      </select>
+        <div className="row">
+          <select className="input" onChange={(e) => setTipo(e.target.value)}>
+            <option>LONG</option>
+            <option>SHORT</option>
+          </select>
 
-      <select value={resultado} onChange={(e) => setResultado(e.target.value)}>
-        <option>WIN</option>
-        <option>LOSS</option>
-      </select>
-
-      <button onClick={createTrade}>Guardar</button>
-
-      <h2>Historial</h2>
-
-      {trades.map((t) => (
-        <div key={t.id} style={{ border: "1px solid gold", margin: 10, padding: 10 }}>
-          {t.activo} - {t.tipo} - {t.resultado}
+          <select className="input" onChange={(e) => setResultado(e.target.value)}>
+            <option>WIN</option>
+            <option>LOSS</option>
+          </select>
         </div>
-      ))}
+
+        <button className="btn" onClick={createTrade}>Guardar</button>
+      </div>
+
+      <h2 className="subtitle">Historial</h2>
+
+      <div className="grid">
+        {trades.map((t) => (
+          <div key={t.id} className="trade-card">
+            <strong>{t.activo}</strong>
+            <p>{t.tipo} - {t.resultado}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
