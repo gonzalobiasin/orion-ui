@@ -1,86 +1,38 @@
-import { useState } from "react";
-import "./App.css";
-
-import Sidebar from "./layout/Sidebar";
-import Header from "./layout/Header";
-
+import { useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard";
 import TradeForm from "./components/TradeForm";
 import TradeList from "./components/TradeList";
+import "./App.css";
 
 const API = "https://orion-backend-8nbf.onrender.com";
 
-export default function App() {
-  const [userId, setUserId] = useState(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+function App() {
   const [trades, setTrades] = useState([]);
   const [open, setOpen] = useState(false);
 
-  const login = async () => {
-    try {
-      const r = await fetch(API + "/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const d = await r.json();
-
-      if (d.user_id) {
-        setUserId(d.user_id);
-        loadTrades(d.user_id);
-      } else {
-        alert("Login incorrecto");
-      }
-    } catch (e) {
-      console.error(e);
-      alert("Error backend");
-    }
+  const cargar = async () => {
+    const res = await fetch(API + "/trades");
+    const data = await res.json();
+    setTrades(data);
   };
 
-  const loadTrades = async (uid) => {
-    try {
-      const r = await fetch(API + "/trades/" + uid);
-      const d = await r.json();
-      setTrades(Array.isArray(d) ? d : []);
-    } catch (e) {
-      console.error(e);
-      setTrades([]);
-    }
-  };
+  useEffect(() => {
+    cargar();
+  }, []);
 
-  // LOGIN
-  if (!userId) {
-    return (
-      <div className="login">
-        <h1>Orion Journal 🚀</h1>
-        <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-        <button onClick={login}>Entrar</button>
-      </div>
-    );
-  }
-
-  // APP
   return (
-    <div className="layout">
-      <Sidebar />
+    <div className="app">
+      <Dashboard trades={trades} />
 
-      <div className="main">
-        <Header onOpen={() => setOpen(true)} />
+      <button className="btn-new" onClick={() => setOpen(true)}>
+        + Nueva operación
+      </button>
 
-        <Dashboard trades={trades} />
+      <TradeForm open={open} onClose={() => setOpen(false)} onSave={cargar} />
 
-        <TradeList trades={trades} reload={() => loadTrades(userId)} />
-
-        <TradeForm
-          open={open}
-          onClose={() => setOpen(false)}
-          userId={userId}
-          onSave={() => loadTrades(userId)}
-        />
-      </div>
+      <TradeList trades={trades} reload={cargar} />
     </div>
   );
 }
+
+export default App;

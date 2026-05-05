@@ -1,34 +1,16 @@
 export default function Dashboard({ trades }) {
-  if (!trades || !Array.isArray(trades)) {
-    return <div>Cargando...</div>;
-  }
+  const wins = trades.filter(t => t.resultado === "WIN").length;
+  const losses = trades.filter(t => t.resultado === "LOSS").length;
+  const open = trades.filter(t => t.resultado === "OPEN").length;
 
-  const wins = trades.filter((t) => t.resultado === "WIN").length;
-  const losses = trades.filter((t) => t.resultado === "LOSS").length;
-  const total = trades.length;
-  const winrate = total ? ((wins / total) * 100).toFixed(1) : 0;
+  const pnl = trades.reduce((acc, t) => acc + (t.pnl || 0), 0);
 
   return (
-    <div className="cards">
-      <div className="card">
-        <h4>Total</h4>
-        <p>{total}</p>
-      </div>
-
-      <div className="card">
-        <h4>Winrate</h4>
-        <p className="green">{winrate}%</p>
-      </div>
-
-      <div className="card">
-        <h4>Wins</h4>
-        <p className="green">{wins}</p>
-      </div>
-
-      <div className="card">
-        <h4>Losses</h4>
-        <p className="red">{losses}</p>
-      </div>
+    <div className="dashboard">
+      <div className="card">WIN: {wins}</div>
+      <div className="card red">LOSS: {losses}</div>
+      <div className="card blue">OPEN: {open}</div>
+      <div className="card green">PNL: ${pnl}</div>
     </div>
   );
 }
