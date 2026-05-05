@@ -1,7 +1,9 @@
 import { useState } from "react";
 import "./App.css";
+
 import Sidebar from "./layout/Sidebar";
 import Header from "./layout/Header";
+
 import Dashboard from "./components/Dashboard";
 import TradeForm from "./components/TradeForm";
 import TradeList from "./components/TradeList";
@@ -18,14 +20,17 @@ function App() {
   const login = async () => {
     const res = await fetch(API + "/login", {
       method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({email, password})
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
     });
 
     const data = await res.json();
-    if(data.user_id){
+
+    if (data.user_id) {
       setUserId(data.user_id);
       loadTrades(data.user_id);
+    } else {
+      alert("Login incorrecto");
     }
   };
 
@@ -35,12 +40,12 @@ function App() {
     setTrades(data);
   };
 
-  if(!userId){
+  if (!userId) {
     return (
       <div className="login">
         <h1>Orion Journal 🚀</h1>
-        <input placeholder="email" onChange={e=>setEmail(e.target.value)}/>
-        <input type="password" placeholder="password" onChange={e=>setPassword(e.target.value)}/>
+        <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
         <button onClick={login}>Login</button>
       </div>
     );
@@ -51,17 +56,17 @@ function App() {
       <Sidebar />
 
       <div className="main">
-        <Header onOpen={()=>setOpenModal(true)} />
+        <Header onOpen={() => setOpenModal(true)} />
 
         <Dashboard trades={trades} />
 
         <TradeList trades={trades} />
 
-        <TradeForm 
+        <TradeForm
           open={openModal}
-          onClose={()=>setOpenModal(false)}
+          onClose={() => setOpenModal(false)}
           userId={userId}
-          onTradeCreated={()=>loadTrades(userId)}
+          onTradeCreated={() => loadTrades(userId)}
         />
       </div>
     </div>

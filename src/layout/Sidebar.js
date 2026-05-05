@@ -1,4 +1,4 @@
-export default function Sidebar(){
+export default function Sidebar() {
   return (
     <div className="sidebar">
       <h2>MLP</h2>

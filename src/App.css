@@ -1,105 +1,133 @@
 body {
-  margin:0;
-  background:#0b0f14;
-  color:white;
-  font-family:Arial;
+  margin: 0;
+  background: #0b0f14;
+  color: white;
+  font-family: Arial;
 }
 
+/* LOGIN */
+.login {
+  text-align: center;
+  margin-top: 100px;
+}
+
+.login input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+}
+
+.login button {
+  padding: 10px 20px;
+  background: gold;
+  border: none;
+}
+
+/* LAYOUT */
 .layout {
-  display:flex;
+  display: flex;
 }
 
 .sidebar {
-  width:220px;
-  background:#111;
-  height:100vh;
-  padding:20px;
+  width: 220px;
+  background: #111;
+  height: 100vh;
+  padding: 20px;
 }
 
 .menu div {
-  margin:15px 0;
-  cursor:pointer;
+  margin: 15px 0;
+  cursor: pointer;
 }
 
 .main {
-  flex:1;
-  padding:20px;
+  flex: 1;
+  padding: 20px;
 }
 
+/* HEADER */
 .header {
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:20px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .btn-primary {
-  background:#ffcc00;
-  border:none;
-  padding:10px 15px;
+  background: gold;
+  border: none;
+  padding: 10px;
 }
 
+/* DASHBOARD */
 .cards {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
 }
 
 .cards div {
-  background:#111;
-  padding:20px;
-  border-radius:10px;
+  background: #111;
+  padding: 20px;
+  border-radius: 10px;
 }
 
+/* MODAL */
 .modal {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.8);
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-box {
-  background:#111;
-  padding:30px;
-  border-radius:10px;
-  width:400px;
+  background: #111;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
 }
 
 .toggle {
-  display:flex;
-  margin-bottom:10px;
+  display: flex;
+  margin-bottom: 10px;
 }
 
 .toggle button {
-  flex:1;
-  padding:10px;
-  border:none;
+  flex: 1;
+  padding: 10px;
+  border: none;
 }
 
 .long.active {
-  background:#00ff88;
+  background: #00ff88;
 }
 
 .short.active {
-  background:#ff4d4d;
+  background: #ff4d4d;
 }
 
 .btn-save {
-  width:100%;
-  padding:10px;
-  background:#00ff88;
-  border:none;
+  width: 100%;
+  padding: 10px;
+  background: #00ff88;
+  border: none;
 }
 
+/* LISTA */
 .trade {
-  display:flex;
-  justify-content:space-between;
-  padding:10px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
 }
 
-.trade.WIN { color:#00ff88; }
-.trade.LOSS { color:#ff4d4d; }
+.trade.WIN {
+  color: #00ff88;
+}
+
+.trade.LOSS {
+  color: #ff4d4d;
+}
