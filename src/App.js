@@ -29,8 +29,6 @@ function App() {
     if (data.user_id) {
       setUserId(data.user_id);
       loadTrades(data.user_id);
-    } else {
-      alert("Login incorrecto");
     }
   };
 
@@ -60,7 +58,7 @@ function App() {
 
         <Dashboard trades={trades} />
 
-        <TradeList trades={trades} />
+        <TradeList trades={trades} onReload={() => loadTrades(userId)} />
 
         <TradeForm
           open={openModal}
