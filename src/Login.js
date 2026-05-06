@@ -13,9 +13,9 @@ export default function Login({
   const [password, setPassword] =
     useState("");
 
-  // ============================
+  // =====================================
   // LOGIN
-  // ============================
+  // =====================================
 
   const login = async () => {
 
@@ -35,7 +35,7 @@ export default function Login({
           body: JSON.stringify({
 
             email,
-            password,
+            password
 
           }),
 
@@ -50,6 +50,11 @@ export default function Login({
         localStorage.setItem(
           "user_id",
           data.user_id
+        );
+
+        localStorage.setItem(
+          "user_email",
+          email
         );
 
         setUserId(
@@ -71,9 +76,9 @@ export default function Login({
     }
   };
 
-  // ============================
+  // =====================================
   // REGISTER
-  // ============================
+  // =====================================
 
   const register = async () => {
 
@@ -93,7 +98,7 @@ export default function Login({
           body: JSON.stringify({
 
             email,
-            password,
+            password
 
           }),
 
@@ -103,10 +108,20 @@ export default function Login({
       const data =
         await res.json();
 
-      if (data.msg === "ok") {
+      if (data.user_id) {
 
-        alert(
-          "Usuario creado"
+        localStorage.setItem(
+          "user_id",
+          data.user_id
+        );
+
+        localStorage.setItem(
+          "user_email",
+          email
+        );
+
+        setUserId(
+          data.user_id
         );
 
       } else {
@@ -124,9 +139,9 @@ export default function Login({
     }
   };
 
-  // ============================
+  // =====================================
   // UI
-  // ============================
+  // =====================================
 
   return (
 
@@ -144,7 +159,7 @@ export default function Login({
 
           <p>
             Professional Trading
-            Journal
+            Analytics Platform
           </p>
 
         </div>
@@ -202,8 +217,8 @@ export default function Login({
           </h2>
 
           <p>
-            Access your trading
-            analytics dashboard
+            Access your professional
+            trading dashboard
           </p>
 
           <input

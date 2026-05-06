@@ -11,71 +11,89 @@ import Dashboard from "./components/Dashboard";
 import TradeList from "./components/TradeList";
 import TradeModal from "./components/TradeModal";
 
-import EquityChart from "./components/EquityChart";
 import AdvancedStats from "./components/AdvancedStats";
+import EquityChart from "./components/EquityChart";
 import TradingCalendar from "./components/TradingCalendar";
 
-const API = "https://orion-backend-8nbf.onrender.com";
+const API =
+  "https://orion-backend-8nbf.onrender.com";
 
 export default function App() {
 
-  // ============================
+  // =====================================
   // USER
-  // ============================
+  // =====================================
 
-  const [userId, setUserId] = useState(
-    localStorage.getItem("user_id")
-  );
+  const [userId, setUserId] =
+    useState(
+      localStorage.getItem(
+        "user_id"
+      )
+    );
 
-  // ============================
+  // =====================================
   // TRADES
-  // ============================
+  // =====================================
 
-  const [trades, setTrades] = useState([]);
+  const [trades, setTrades] =
+    useState([]);
 
-  // ============================
+  // =====================================
   // FILTERS
-  // ============================
+  // =====================================
 
   const [search, setSearch] =
     useState("");
 
-  const [filterEstado, setFilterEstado] =
-    useState("ALL");
+  const [
+    filterEstado,
+    setFilterEstado
+  ] = useState("ALL");
 
-  const [filterTF, setFilterTF] =
-    useState("ALL");
+  const [
+    filterTF,
+    setFilterTF
+  ] = useState("ALL");
 
-  const [filterSesion, setFilterSesion] =
-    useState("ALL");
+  const [
+    filterSesion,
+    setFilterSesion
+  ] = useState("ALL");
 
-  // ============================
+  // =====================================
   // MODAL
-  // ============================
+  // =====================================
 
   const [showModal, setShowModal] =
     useState(false);
 
-  // ============================
-  // EDIT MODE
-  // ============================
+  // =====================================
+  // EDIT
+  // =====================================
 
-  const [tradeToEdit, setTradeToEdit] =
-    useState(null);
+  const [
+    tradeToEdit,
+    setTradeToEdit
+  ] = useState(null);
 
-  // ============================
+  // =====================================
   // LOAD TRADES
-  // ============================
+  // =====================================
 
   const loadTrades = async () => {
 
     if (!userId) return;
 
     const res = await fetch(
-      API + "/trades/" + userId
+
+      API +
+        "/trades/" +
+        userId
+
     );
 
-    const data = await res.json();
+    const data =
+      await res.json();
 
     setTrades(data);
   };
@@ -86,35 +104,45 @@ export default function App() {
 
   }, [userId]);
 
-  // ============================
+  // =====================================
   // DELETE
-  // ============================
+  // =====================================
 
-  const deleteTrade = async (id) => {
+  const deleteTrade = async (
+    id
+  ) => {
 
-    await fetch(API + "/trades/" + id, {
+    await fetch(
 
-      method: "DELETE",
+      API +
+        "/trades/" +
+        id,
 
-    });
+      {
+        method: "DELETE",
+      }
+
+    );
 
     loadTrades();
   };
 
-  // ============================
+  // =====================================
   // EDIT
-  // ============================
+  // =====================================
 
-  const editTrade = (trade) => {
+  const editTrade = (
+    trade
+  ) => {
 
     setTradeToEdit(trade);
 
     setShowModal(true);
   };
 
-  // ============================
+  // =====================================
   // NEW TRADE
-  // ============================
+  // =====================================
 
   const newTrade = () => {
 
@@ -123,12 +151,12 @@ export default function App() {
     setShowModal(true);
   };
 
-  // ============================
+  // =====================================
   // FILTER LOGIC
-  // ============================
+  // =====================================
 
-  const filteredTrades = trades.filter(
-    (t) => {
+  const filteredTrades =
+    trades.filter((t) => {
 
       const matchSearch =
         t.activo
@@ -140,96 +168,145 @@ export default function App() {
       const matchEstado =
         filterEstado === "ALL"
           ? true
-          : t.estado === filterEstado;
+          : t.estado ===
+            filterEstado;
 
       const matchTF =
         filterTF === "ALL"
           ? true
-          : t.timeframe === filterTF;
+          : t.timeframe ===
+            filterTF;
 
       const matchSesion =
         filterSesion === "ALL"
           ? true
-          : t.sesion === filterSesion;
+          : t.sesion ===
+            filterSesion;
 
       return (
+
         matchSearch &&
         matchEstado &&
         matchTF &&
         matchSesion
-      );
-    }
-  );
 
-  // ============================
+      );
+    });
+
+  // =====================================
   // LOGOUT
-  // ============================
+  // =====================================
 
   const logout = () => {
 
-    localStorage.removeItem("user_id");
+    localStorage.removeItem(
+      "user_id"
+    );
+
+    localStorage.removeItem(
+      "user_email"
+    );
 
     setUserId(null);
   };
 
-  // ============================
+  // =====================================
   // LOGIN
-  // ============================
+  // =====================================
 
   if (!userId) {
 
     return (
-      <Login setUserId={setUserId} />
+
+      <Login
+        setUserId={setUserId}
+      />
+
     );
   }
 
-  // ============================
+  // =====================================
   // UI
-  // ============================
+  // =====================================
 
   return (
 
     <div className="app">
 
+      {/* SIDEBAR */}
+
       <Sidebar />
+
+      {/* MAIN */}
 
       <div className="main">
 
+        {/* HEADER */}
+
         <Header
-          onNewTrade={newTrade}
+
+          onNewTrade={
+            newTrade
+          }
+
           logout={logout}
+
         />
 
-        <Dashboard trades={trades} />
+        {/* DASHBOARD */}
 
-        <AdvancedStats trades={trades} />
+        <Dashboard
+          trades={trades}
+        />
 
-        <EquityChart trades={trades} />
+        {/* EQUITY */}
 
-        <TradingCalendar trades={trades} />
+        <EquityChart
+          trades={trades}
+        />
+
+        {/* ADVANCED */}
+
+        <AdvancedStats
+          trades={trades}
+        />
+
+        {/* CALENDAR */}
+
+        <TradingCalendar
+          trades={trades}
+        />
 
         {/* FILTERS */}
 
         <div className="filters">
 
           <input
+
             placeholder="Buscar activo..."
+
             value={search}
+
             onChange={(e) =>
               setSearch(
                 e.target.value
               )
             }
+
           />
 
           <select
+
             value={filterEstado}
+
             onChange={(e) =>
               setFilterEstado(
                 e.target.value
               )
             }
+
           >
+
             <option value="ALL">
               Todos
             </option>
@@ -249,33 +326,55 @@ export default function App() {
           </select>
 
           <select
+
             value={filterTF}
+
             onChange={(e) =>
               setFilterTF(
                 e.target.value
               )
             }
+
           >
+
             <option value="ALL">
               Todos TF
             </option>
 
-            <option>5m</option>
-            <option>15m</option>
-            <option>1H</option>
-            <option>4H</option>
-            <option>1D</option>
+            <option>
+              5m
+            </option>
+
+            <option>
+              15m
+            </option>
+
+            <option>
+              1H
+            </option>
+
+            <option>
+              4H
+            </option>
+
+            <option>
+              1D
+            </option>
 
           </select>
 
           <select
+
             value={filterSesion}
+
             onChange={(e) =>
               setFilterSesion(
                 e.target.value
               )
             }
+
           >
+
             <option value="ALL">
               Todas
             </option>
@@ -296,11 +395,25 @@ export default function App() {
 
         </div>
 
+        {/* TRADES */}
+
         <TradeList
-          trades={filteredTrades}
-          deleteTrade={deleteTrade}
-          editTrade={editTrade}
+
+          trades={
+            filteredTrades
+          }
+
+          deleteTrade={
+            deleteTrade
+          }
+
+          editTrade={
+            editTrade
+          }
+
         />
+
+        {/* MODAL */}
 
         {showModal && (
 
@@ -308,9 +421,13 @@ export default function App() {
 
             user={userId}
 
-            tradeToEdit={tradeToEdit}
+            tradeToEdit={
+              tradeToEdit
+            }
 
-            refreshTrades={loadTrades}
+            refreshTrades={
+              loadTrades
+            }
 
             onClose={() =>
               setShowModal(false)
