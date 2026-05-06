@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const API =
   "https://orion-backend-8nbf.onrender.com";
@@ -7,11 +7,11 @@ export default function TradeModal({
 
   user,
 
-  tradeToEdit,
+  onClose,
 
   refreshTrades,
 
-  onClose
+  tradeToEdit
 
 }) {
 
@@ -20,108 +20,167 @@ export default function TradeModal({
   // =====================================
 
   const [activo, setActivo] =
-    useState(
-      tradeToEdit?.activo || ""
-    );
+    useState("");
 
   const [tipo, setTipo] =
-    useState(
-      tradeToEdit?.tipo || "LONG"
-    );
+    useState("LONG");
 
   const [mercado, setMercado] =
-    useState(
-      tradeToEdit?.mercado || "CRYPTO"
-    );
+    useState("CRYPTO");
 
   const [estado, setEstado] =
-    useState(
-      tradeToEdit?.estado || "OPEN"
-    );
+    useState("OPEN");
 
   const [capital, setCapital] =
-    useState(
-      tradeToEdit?.capital || 0
-    );
+    useState("");
 
   const [
     apalancamiento,
     setApalancamiento
-  ] = useState(
-    tradeToEdit?.apalancamiento || 1
-  );
+  ] = useState("");
 
   const [tp, setTp] =
-    useState(
-      tradeToEdit?.tp || 0
-    );
+    useState("");
 
   const [sl, setSl] =
-    useState(
-      tradeToEdit?.sl || 0
-    );
+    useState("");
 
   const [be, setBe] =
-    useState(
-      tradeToEdit?.be || 0
-    );
+    useState("");
 
   const [riesgo, setRiesgo] =
-    useState(
-      tradeToEdit?.riesgo || 0
-    );
+    useState("");
 
   const [rr, setRr] =
-    useState(
-      tradeToEdit?.rr || 0
-    );
+    useState("");
 
   const [pnl, setPnl] =
-    useState(
-      tradeToEdit?.pnl || 0
-    );
+    useState("");
 
   const [
     porcentaje,
     setPorcentaje
-  ] = useState(
-    tradeToEdit?.porcentaje || 0
-  );
+  ] = useState("");
 
-  const [timeframe, setTimeframe] =
-    useState(
-      tradeToEdit?.timeframe || "5m"
-    );
+  const [
+    timeframe,
+    setTimeframe
+  ] = useState("5m");
 
   const [sesion, setSesion] =
-    useState(
-      tradeToEdit?.sesion || "NY"
-    );
+    useState("NY");
+
+  const [fecha, setFecha] =
+    useState("");
+
+  const [hora, setHora] =
+    useState("");
 
   const [notas, setNotas] =
-    useState(
-      tradeToEdit?.notas || ""
-    );
+    useState("");
 
   const [
     screenshot,
     setScreenshot
-  ] = useState(
-    tradeToEdit?.screenshot || ""
-  );
-
-  const [fecha, setFecha] =
-    useState(
-      tradeToEdit?.fecha || ""
-    );
-
-  const [hora, setHora] =
-    useState(
-      tradeToEdit?.hora || ""
-    );
+  ] = useState("");
 
   // =====================================
-  // IMAGE UPLOAD
+  // EDIT MODE
+  // =====================================
+
+  useEffect(() => {
+
+    if (tradeToEdit) {
+
+      setActivo(
+        tradeToEdit.activo || ""
+      );
+
+      setTipo(
+        tradeToEdit.tipo || "LONG"
+      );
+
+      setMercado(
+        tradeToEdit.mercado ||
+          "CRYPTO"
+      );
+
+      setEstado(
+        tradeToEdit.estado ||
+          "OPEN"
+      );
+
+      setCapital(
+        tradeToEdit.capital || ""
+      );
+
+      setApalancamiento(
+        tradeToEdit.apalancamiento ||
+          ""
+      );
+
+      setTp(
+        tradeToEdit.tp || ""
+      );
+
+      setSl(
+        tradeToEdit.sl || ""
+      );
+
+      setBe(
+        tradeToEdit.be || ""
+      );
+
+      setRiesgo(
+        tradeToEdit.riesgo ||
+          ""
+      );
+
+      setRr(
+        tradeToEdit.rr || ""
+      );
+
+      setPnl(
+        tradeToEdit.pnl || ""
+      );
+
+      setPorcentaje(
+        tradeToEdit.porcentaje ||
+          ""
+      );
+
+      setTimeframe(
+        tradeToEdit.timeframe ||
+          "5m"
+      );
+
+      setSesion(
+        tradeToEdit.sesion ||
+          "NY"
+      );
+
+      setFecha(
+        tradeToEdit.fecha || ""
+      );
+
+      setHora(
+        tradeToEdit.hora || ""
+      );
+
+      setNotas(
+        tradeToEdit.notas || ""
+      );
+
+      setScreenshot(
+        tradeToEdit.screenshot ||
+          ""
+      );
+    }
+
+  }, [tradeToEdit]);
+
+  // =====================================
+  // IMAGE
   // =====================================
 
   const handleImage = (e) => {
@@ -148,104 +207,112 @@ export default function TradeModal({
   // SAVE
   // =====================================
 
-  const saveTrade = async () => {
+  const saveTrade =
+    async () => {
 
-    const payload = {
+      const body = {
 
-      user_id: Number(user),
+        user_id: Number(user),
 
-      activo,
-      tipo,
-      mercado,
+        activo,
+        tipo,
+        mercado,
 
-      estado,
+        estado,
 
-      capital:
-        Number(capital),
+        capital:
+          Number(capital) || 0,
 
-      apalancamiento:
-        Number(apalancamiento),
+        apalancamiento:
+          Number(
+            apalancamiento
+          ) || 1,
 
-      tp: Number(tp),
+        tp:
+          Number(tp) || 0,
 
-      sl: Number(sl),
+        sl:
+          Number(sl) || 0,
 
-      be: Number(be),
+        be:
+          Number(be) || 0,
 
-      riesgo:
-        Number(riesgo),
+        riesgo:
+          Number(riesgo) || 0,
 
-      rr: Number(rr),
+        rr:
+          Number(rr) || 0,
 
-      pnl: Number(pnl),
+        pnl:
+          Number(pnl) || 0,
 
-      porcentaje:
-        Number(porcentaje),
+        porcentaje:
+          Number(
+            porcentaje
+          ) || 0,
 
-      timeframe,
+        timeframe,
+        sesion,
 
-      sesion,
+        notas,
+        screenshot,
 
-      notas,
+        fecha,
+        hora,
+      };
 
-      screenshot,
+      // EDIT
 
-      fecha,
+      if (tradeToEdit) {
 
-      hora
+        await fetch(
+
+          API +
+            "/trades/" +
+            tradeToEdit.id,
+
+          {
+
+            method: "PUT",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body: JSON.stringify(
+              body
+            ),
+          }
+
+        );
+
+      } else {
+
+        // CREATE
+
+        await fetch(
+          API + "/trades",
+          {
+
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body: JSON.stringify(
+              body
+            ),
+          }
+        );
+      }
+
+      refreshTrades();
+
+      onClose();
     };
-
-    // EDIT
-
-    if (tradeToEdit) {
-
-      await fetch(
-        API +
-          "/trades/" +
-          tradeToEdit.id,
-        {
-
-          method: "PUT",
-
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-
-          body: JSON.stringify(
-            payload
-          ),
-
-        }
-      );
-
-    } else {
-
-      // CREATE
-
-      await fetch(
-        API + "/trades",
-        {
-
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-
-          body: JSON.stringify(
-            payload
-          ),
-
-        }
-      );
-    }
-
-    refreshTrades();
-
-    onClose();
-  };
 
   // =====================================
   // UI
@@ -261,7 +328,7 @@ export default function TradeModal({
 
           {tradeToEdit
             ? "Editar Trade"
-            : "Nuevo Trade"}
+            : "Nueva Operación"}
 
         </h2>
 
@@ -270,22 +337,29 @@ export default function TradeModal({
         <div className="form-row">
 
           <input
-            placeholder="Activo"
+
+            placeholder="Activo (BTC, ETH, SOL...)"
+
             value={activo}
+
             onChange={(e) =>
               setActivo(
                 e.target.value
               )
             }
+
           />
 
           <select
+
             value={tipo}
+
             onChange={(e) =>
               setTipo(
                 e.target.value
               )
             }
+
           >
 
             <option>
@@ -299,12 +373,15 @@ export default function TradeModal({
           </select>
 
           <select
+
             value={mercado}
+
             onChange={(e) =>
               setMercado(
                 e.target.value
               )
             }
+
           >
 
             <option>
@@ -316,7 +393,7 @@ export default function TradeModal({
             </option>
 
             <option>
-              STOCKS
+              INDICES
             </option>
 
           </select>
@@ -328,12 +405,15 @@ export default function TradeModal({
         <div className="form-row">
 
           <select
+
             value={estado}
+
             onChange={(e) =>
               setEstado(
                 e.target.value
               )
             }
+
           >
 
             <option>
@@ -351,27 +431,37 @@ export default function TradeModal({
           </select>
 
           <input
+
             type="number"
+
             placeholder="Capital"
+
             value={capital}
+
             onChange={(e) =>
               setCapital(
                 e.target.value
               )
             }
+
           />
 
           <input
+
             type="number"
-            placeholder="Leverage"
+
+            placeholder="Apalancamiento"
+
             value={
               apalancamiento
             }
+
             onChange={(e) =>
               setApalancamiento(
                 e.target.value
               )
             }
+
           />
 
         </div>
@@ -381,36 +471,51 @@ export default function TradeModal({
         <div className="form-row">
 
           <input
+
             type="number"
-            placeholder="TP"
+
+            placeholder="Take Profit"
+
             value={tp}
+
             onChange={(e) =>
               setTp(
                 e.target.value
               )
             }
+
           />
 
           <input
+
             type="number"
-            placeholder="SL"
+
+            placeholder="Stop Loss"
+
             value={sl}
+
             onChange={(e) =>
               setSl(
                 e.target.value
               )
             }
+
           />
 
           <input
+
             type="number"
-            placeholder="BE"
+
+            placeholder="Break Even"
+
             value={be}
+
             onChange={(e) =>
               setBe(
                 e.target.value
               )
             }
+
           />
 
         </div>
@@ -420,36 +525,51 @@ export default function TradeModal({
         <div className="form-row">
 
           <input
+
             type="number"
+
             placeholder="Riesgo"
+
             value={riesgo}
+
             onChange={(e) =>
               setRiesgo(
                 e.target.value
               )
             }
+
           />
 
           <input
+
             type="number"
+
             placeholder="RR"
+
             value={rr}
+
             onChange={(e) =>
               setRr(
                 e.target.value
               )
             }
+
           />
 
           <input
+
             type="number"
+
             placeholder="PNL"
+
             value={pnl}
+
             onChange={(e) =>
               setPnl(
                 e.target.value
               )
             }
+
           />
 
         </div>
@@ -459,23 +579,31 @@ export default function TradeModal({
         <div className="form-row">
 
           <input
+
             type="number"
-            placeholder="% Resultado"
+
+            placeholder="Resultado %"
+
             value={porcentaje}
+
             onChange={(e) =>
               setPorcentaje(
                 e.target.value
               )
             }
+
           />
 
           <select
+
             value={timeframe}
+
             onChange={(e) =>
               setTimeframe(
                 e.target.value
               )
             }
+
           >
 
             <option>
@@ -501,12 +629,15 @@ export default function TradeModal({
           </select>
 
           <select
+
             value={sesion}
+
             onChange={(e) =>
               setSesion(
                 e.target.value
               )
             }
+
           >
 
             <option>
@@ -530,23 +661,31 @@ export default function TradeModal({
         <div className="form-row">
 
           <input
+
             type="date"
+
             value={fecha}
+
             onChange={(e) =>
               setFecha(
                 e.target.value
               )
             }
+
           />
 
           <input
+
             type="time"
+
             value={hora}
+
             onChange={(e) =>
               setHora(
                 e.target.value
               )
             }
+
           />
 
         </div>
@@ -554,13 +693,17 @@ export default function TradeModal({
         {/* NOTES */}
 
         <textarea
-          placeholder="Notas..."
+
+          placeholder="Notas del trade, análisis, emociones, contexto, errores, mejoras..."
+
           value={notas}
+
           onChange={(e) =>
             setNotas(
               e.target.value
             )
           }
+
         />
 
         {/* IMAGE */}
@@ -572,9 +715,15 @@ export default function TradeModal({
         >
 
           <input
+
             type="file"
+
             accept="image/*"
-            onChange={handleImage}
+
+            onChange={
+              handleImage
+            }
+
           />
 
         </div>
@@ -595,13 +744,16 @@ export default function TradeModal({
 
         )}
 
-        {/* ACTIONS */}
+        {/* BUTTONS */}
 
         <div className="modal-actions">
 
           <button
+
             className="save-btn"
+
             onClick={saveTrade}
+
           >
 
             Guardar
@@ -609,8 +761,11 @@ export default function TradeModal({
           </button>
 
           <button
+
             className="cancel-btn"
+
             onClick={onClose}
+
           >
 
             Cancelar
