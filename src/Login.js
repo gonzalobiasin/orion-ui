@@ -1,139 +1,250 @@
 import { useState } from "react";
 
-const API = "https://orion-backend-8nbf.onrender.com";
+const API =
+  "https://orion-backend-8nbf.onrender.com";
 
-export default function Login({ setUserId }) {
+export default function Login({
+  setUserId
+}) {
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] =
+    useState("");
 
-  // 🔹 LOGIN
+  const [password, setPassword] =
+    useState("");
+
+  // ============================
+  // LOGIN
+  // ============================
+
   const login = async () => {
 
     try {
 
-      const res = await fetch(API + "/login", {
-        method: "POST",
+      const res = await fetch(
+        API + "/login",
+        {
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+          method: "POST",
 
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
 
-      if (res.status !== 200) {
+          body: JSON.stringify({
 
-        alert("Login incorrecto");
+            email,
+            password,
 
-        return;
-      }
+          }),
 
-      const data = await res.json();
-
-      // 🔹 guardar sesión
-      localStorage.setItem(
-        "user_id",
-        data.user_id
+        }
       );
 
-      setUserId(data.user_id);
+      const data =
+        await res.json();
 
-    } catch (err) {
+      if (data.user_id) {
 
-      console.log(err);
+        localStorage.setItem(
+          "user_id",
+          data.user_id
+        );
 
-      alert("Error en login");
+        setUserId(
+          data.user_id
+        );
+
+      } else {
+
+        alert(
+          "Login incorrecto"
+        );
+      }
+
+    } catch {
+
+      alert(
+        "Error servidor"
+      );
     }
   };
 
-  // 🔹 REGISTER
+  // ============================
+  // REGISTER
+  // ============================
+
   const register = async () => {
 
     try {
 
-      const res = await fetch(API + "/register", {
+      const res = await fetch(
+        API + "/register",
+        {
 
-        method: "POST",
+          method: "POST",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
 
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+          body: JSON.stringify({
 
-      if (res.status !== 200) {
+            email,
+            password,
 
-        alert("No se pudo registrar");
+          }),
 
-        return;
+        }
+      );
+
+      const data =
+        await res.json();
+
+      if (data.msg === "ok") {
+
+        alert(
+          "Usuario creado"
+        );
+
+      } else {
+
+        alert(
+          "Error"
+        );
       }
 
-      alert("Usuario creado");
+    } catch {
 
-    } catch (err) {
-
-      console.log(err);
-
-      alert("Error");
+      alert(
+        "Usuario ya existe"
+      );
     }
   };
 
+  // ============================
+  // UI
+  // ============================
+
   return (
-    <div className="login-container">
 
-      <div className="login-box">
+    <div className="login-page">
 
-        <h1>🚀 Orion Journal</h1>
+      {/* LEFT */}
 
-        <p className="login-subtitle">
-          Trading Journal Profesional
-        </p>
+      <div className="login-left">
 
-        <input
-          type="email"
-          placeholder="Email"
+        <div className="login-brand">
 
-          value={email}
+          <h1>
+            🚀 Orion Journal
+          </h1>
 
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
-        />
+          <p>
+            Professional Trading
+            Journal
+          </p>
 
-        <input
-          type="password"
-          placeholder="Contraseña"
+        </div>
 
-          value={password}
+        <div className="login-stats">
 
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-        />
+          <div className="login-stat-card">
 
-        <button
-          className="btn-login"
-          onClick={login}
-        >
-          Login
-        </button>
+            <h2>
+              +12%
+            </h2>
 
-        <button
-          className="btn-register"
-          onClick={register}
-        >
-          Crear cuenta
-        </button>
+            <span>
+              Avg Monthly Growth
+            </span>
+
+          </div>
+
+          <div className="login-stat-card">
+
+            <h2>
+              74%
+            </h2>
+
+            <span>
+              Avg Winrate
+            </span>
+
+          </div>
+
+          <div className="login-stat-card">
+
+            <h2>
+              2.4
+            </h2>
+
+            <span>
+              Avg RR
+            </span>
+
+          </div>
+
+        </div>
 
       </div>
+
+      {/* RIGHT */}
+
+      <div className="login-right">
+
+        <div className="login-box">
+
+          <h2>
+            Welcome Back
+          </h2>
+
+          <p>
+            Access your trading
+            analytics dashboard
+          </p>
+
+          <input
+            placeholder="Email"
+            value={email}
+            onChange={(e) =>
+              setEmail(
+                e.target.value
+              )
+            }
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) =>
+              setPassword(
+                e.target.value
+              )
+            }
+          />
+
+          <button
+            className="login-main-btn"
+            onClick={login}
+          >
+            Login
+          </button>
+
+          <button
+            className="register-btn"
+            onClick={register}
+          >
+            Create Account
+          </button>
+
+        </div>
+
+      </div>
+
     </div>
   );
 }
