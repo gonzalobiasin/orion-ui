@@ -12,7 +12,6 @@ import TradeList from "./components/TradeList";
 import TradeModal from "./components/TradeModal";
 
 import AdvancedStats from "./components/AdvancedStats";
-import EquityChart from "./components/EquityChart";
 import TradingCalendar from "./components/TradingCalendar";
 
 const API =
@@ -77,7 +76,7 @@ export default function App() {
   ] = useState(null);
 
   // =====================================
-  // LOAD TRADES
+  // LOAD
   // =====================================
 
   const loadTrades = async () => {
@@ -141,7 +140,7 @@ export default function App() {
   };
 
   // =====================================
-  // NEW TRADE
+  // NEW
   // =====================================
 
   const newTrade = () => {
@@ -152,7 +151,7 @@ export default function App() {
   };
 
   // =====================================
-  // FILTER LOGIC
+  // FILTERS
   // =====================================
 
   const filteredTrades =
@@ -233,15 +232,9 @@ export default function App() {
 
     <div className="app">
 
-      {/* SIDEBAR */}
-
       <Sidebar />
 
-      {/* MAIN */}
-
       <div className="main">
-
-        {/* HEADER */}
 
         <Header
 
@@ -256,12 +249,6 @@ export default function App() {
         {/* DASHBOARD */}
 
         <Dashboard
-          trades={trades}
-        />
-
-        {/* EQUITY */}
-
-        <EquityChart
           trades={trades}
         />
 
