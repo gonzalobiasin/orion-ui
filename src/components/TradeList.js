@@ -1,6 +1,7 @@
 export default function TradeList({
   trades,
   deleteTrade,
+  editTrade,
 }) {
 
   return (
@@ -70,7 +71,10 @@ export default function TradeList({
 
           <div className="trade-actions">
 
-            <button className="edit-btn">
+            <button
+              className="edit-btn"
+              onClick={() => editTrade(t)}
+            >
               ✏️
             </button>
 
@@ -86,7 +90,9 @@ export default function TradeList({
           </div>
 
         </div>
+
       ))}
+
     </div>
   );
 }
