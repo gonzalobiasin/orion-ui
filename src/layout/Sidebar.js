@@ -1,29 +1,30 @@
 export default function Sidebar() {
 
   return (
+
     <div className="sidebar">
 
-      <h2 className="logo">
+      <h2>
         🚀 ORION
       </h2>
 
       <div className="menu">
 
-        <div className="menu-item active">
+        <p>
           📊 Dashboard
-        </div>
+        </p>
 
-        <div className="menu-item">
+        <p>
           📘 Bitácora
-        </div>
+        </p>
 
-        <div className="menu-item">
-          📅 Calendario
-        </div>
+        <p>
+          🗓️ Calendario
+        </p>
 
-        <div className="menu-item">
+        <p>
           📈 Estadísticas
-        </div>
+        </p>
 
       </div>
 

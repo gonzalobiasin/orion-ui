@@ -1,6 +1,6 @@
 export default function Header({
   onNewTrade,
-  logout,
+  logout
 }) {
 
   return (
@@ -8,14 +8,28 @@ export default function Header({
     <div className="header">
 
       <div>
-        <h1>Orion Journal</h1>
 
-        <p className="subtitle">
+        <h1>
+          Orion Journal
+        </h1>
+
+        <p
+          style={{
+            color: "#9ca3af",
+            marginTop: "8px"
+          }}
+        >
           Trading Journal Profesional
         </p>
+
       </div>
 
-      <div className="header-buttons">
+      <div
+        style={{
+          display: "flex",
+          gap: "12px"
+        }}
+      >
 
         <button
           className="btn-primary"
@@ -25,7 +39,7 @@ export default function Header({
         </button>
 
         <button
-          className="btn-logout"
+          className="cancel-btn"
           onClick={logout}
         >
           Logout
