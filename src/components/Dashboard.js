@@ -1,8 +1,12 @@
-export default function Dashboard({ trades }) {
+import EquityChart from "./EquityChart";
 
-  // ============================
-  // BASIC STATS
-  // ============================
+export default function Dashboard({
+  trades
+}) {
+
+  // =====================================
+  // STATS
+  // =====================================
 
   const wins = trades.filter(
     (t) => t.estado === "WIN"
@@ -16,227 +20,143 @@ export default function Dashboard({ trades }) {
     (t) => t.estado === "OPEN"
   ).length;
 
-  const totalTrades = wins + losses;
-
-  // ============================
-  // WINRATE
-  // ============================
+  const totalTrades =
+    wins + losses;
 
   const winrate =
     totalTrades > 0
       ? (
-          (wins / totalTrades) * 100
+          (wins /
+            totalTrades) *
+          100
         ).toFixed(1)
       : 0;
 
-  // ============================
-  // PNL
-  // ============================
-
   const pnl = trades.reduce(
-    (acc, t) => acc + Number(t.pnl),
+    (acc, t) =>
+      acc + Number(t.pnl),
     0
   );
 
-  // ============================
-  // BEST / WORST
-  // ============================
+  const bestTrade =
+    Math.max(
+      ...trades.map((t) =>
+        Number(t.pnl)
+      ),
+      0
+    );
 
-  const bestTrade = trades.length
-    ? Math.max(
-        ...trades.map((t) =>
-          Number(t.pnl)
-        )
-      )
-    : 0;
+  const worstTrade =
+    Math.min(
+      ...trades.map((t) =>
+        Number(t.pnl)
+      ),
+      0
+    );
 
-  const worstTrade = trades.length
-    ? Math.min(
-        ...trades.map((t) =>
-          Number(t.pnl)
-        )
-      )
-    : 0;
-
-  // ============================
-  // AVG WIN
-  // ============================
-
-  const avgWinTrades = trades.filter(
-    (t) => Number(t.pnl) > 0
-  );
-
-  const avgWin =
-    avgWinTrades.length > 0
-      ? (
-          avgWinTrades.reduce(
-            (acc, t) =>
-              acc + Number(t.pnl),
-            0
-          ) / avgWinTrades.length
-        ).toFixed(2)
-      : 0;
-
-  // ============================
-  // AVG LOSS
-  // ============================
-
-  const avgLossTrades = trades.filter(
-    (t) => Number(t.pnl) < 0
-  );
-
-  const avgLoss =
-    avgLossTrades.length > 0
-      ? (
-          avgLossTrades.reduce(
-            (acc, t) =>
-              acc + Number(t.pnl),
-            0
-          ) / avgLossTrades.length
-        ).toFixed(2)
-      : 0;
-
-  // ============================
-  // BEST ASSET
-  // ============================
-
-  const assetStats = {};
-
-  trades.forEach((t) => {
-
-    if (!assetStats[t.activo]) {
-
-      assetStats[t.activo] = 0;
-    }
-
-    assetStats[t.activo] += Number(t.pnl);
-  });
-
-  let bestAsset = "-";
-  let bestAssetValue = -999999;
-
-  Object.keys(assetStats).forEach((asset) => {
-
-    if (
-      assetStats[asset] >
-      bestAssetValue
-    ) {
-
-      bestAssetValue =
-        assetStats[asset];
-
-      bestAsset = asset;
-    }
-
-  });
-
-  // ============================
+  // =====================================
   // UI
-  // ============================
+  // =====================================
 
   return (
 
-    <div className="stats">
+    <div>
 
-      <div className="stat-card">
+      {/* STATS */}
 
-        <h3>WINRATE</h3>
+      <div className="stats">
 
-        <p>
-          {winrate}%
-        </p>
+        <div className="stat-card">
 
-      </div>
+          <h3>
+            WINRATE
+          </h3>
 
-      <div className="stat-card">
+          <p>
+            {winrate}%
+          </p>
 
-        <h3>PNL TOTAL</h3>
+        </div>
 
-        <p
-          className={
-            pnl >= 0
-              ? "positive"
-              : "negative"
-          }
-        >
-          ${pnl.toFixed(2)}
-        </p>
+        <div className="stat-card">
 
-      </div>
+          <h3>
+            PNL
+          </h3>
 
-      <div className="stat-card">
+          <p>
+            ${pnl}
+          </p>
 
-        <h3>WINS</h3>
+        </div>
 
-        <p>{wins}</p>
+        <div className="stat-card">
 
-      </div>
+          <h3>
+            WINS
+          </h3>
 
-      <div className="stat-card">
+          <p>
+            {wins}
+          </p>
 
-        <h3>LOSSES</h3>
+        </div>
 
-        <p>{losses}</p>
+        <div className="stat-card">
 
-      </div>
+          <h3>
+            LOSSES
+          </h3>
 
-      <div className="stat-card">
+          <p>
+            {losses}
+          </p>
 
-        <h3>OPEN</h3>
+        </div>
 
-        <p>{open}</p>
+        <div className="stat-card">
 
-      </div>
+          <h3>
+            OPEN
+          </h3>
 
-      <div className="stat-card">
+          <p>
+            {open}
+          </p>
 
-        <h3>BEST TRADE</h3>
+        </div>
 
-        <p className="positive">
-          ${bestTrade}
-        </p>
+        <div className="stat-card">
 
-      </div>
+          <h3>
+            BEST
+          </h3>
 
-      <div className="stat-card">
+          <p>
+            ${bestTrade}
+          </p>
 
-        <h3>WORST TRADE</h3>
+        </div>
 
-        <p className="negative">
-          ${worstTrade}
-        </p>
+        <div className="stat-card">
 
-      </div>
+          <h3>
+            WORST
+          </h3>
 
-      <div className="stat-card">
+          <p>
+            ${worstTrade}
+          </p>
 
-        <h3>AVG WIN</h3>
-
-        <p className="positive">
-          ${avgWin}
-        </p>
-
-      </div>
-
-      <div className="stat-card">
-
-        <h3>AVG LOSS</h3>
-
-        <p className="negative">
-          ${avgLoss}
-        </p>
-
-      </div>
-
-      <div className="stat-card">
-
-        <h3>BEST ASSET</h3>
-
-        <p>
-          {bestAsset}
-        </p>
+        </div>
 
       </div>
+
+      {/* EQUITY CURVE */}
+
+      <EquityChart
+        trades={trades}
+      />
 
     </div>
   );

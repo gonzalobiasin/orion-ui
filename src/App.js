@@ -236,6 +236,8 @@ export default function App() {
 
       <div className="main">
 
+        {/* HEADER */}
+
         <Header
 
           onNewTrade={
