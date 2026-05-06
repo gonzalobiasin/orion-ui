@@ -10,10 +10,6 @@ body{
   color:#ffffff;
 }
 
-/* =====================================
-APP
-===================================== */
-
 .app{
   display:flex;
   min-height:100vh;
@@ -97,6 +93,7 @@ HEADER
 
 .btn-primary:hover{
   transform:translateY(-2px);
+
   box-shadow:
   0 10px 25px
   rgba(200,169,91,.35);
@@ -146,13 +143,11 @@ STATS
   color:#c8a95b;
   margin-bottom:10px;
   font-size:14px;
-  letter-spacing:1px;
 }
 
 .stat-card p{
   font-size:34px;
   font-weight:700;
-  color:#ffffff;
 }
 
 /* =====================================
@@ -271,14 +266,13 @@ FILTERS
 }
 
 /* =====================================
-SECTIONS
+SECTION
 ===================================== */
 
 .section-title{
   font-size:28px;
   font-weight:700;
   margin-bottom:20px;
-  color:#ffffff;
 }
 
 .empty-box{
@@ -323,6 +317,26 @@ TRADE CARD
   display:flex;
   justify-content:space-between;
   margin-bottom:24px;
+}
+
+.trade-title-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.coin-logo{
+  width:42px;
+  height:42px;
+  object-fit:contain;
+  border-radius:50%;
+  background:#111111;
+  padding:4px;
+  border:1px solid #c8a95b;
+
+  box-shadow:
+  0 0 15px
+  rgba(200,169,91,.25);
 }
 
 .trade-top h3{
